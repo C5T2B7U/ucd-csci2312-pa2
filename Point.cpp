@@ -32,9 +32,15 @@ namespace Clustering {
 			{
 				// DO NOTHING
 			}
+			// ELSE DO CONSTRUCTOR
 			else
 			{
-				// DO CONSTRUCTOR
+				__id = arg_Point.__id;
+				__dim = arg_Point.__dim;
+				__values = new double[arg_Point.getDims()];
+
+				for (int index = 0; index < __dim; index++)
+					setValue(index, arg_Point.getValue(index));
 			}
 		}
 
@@ -51,7 +57,14 @@ namespace Clustering {
 			}
 		}
 
-		Point::~Point() {}
+		Point::~Point()
+		{
+			if (__values != NULL)
+			{
+				delete [] __values;
+			}
+			__values = NULL;
+		}
 
 		// Accessors & mutators
 		int Point::getId() const
