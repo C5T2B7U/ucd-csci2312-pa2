@@ -13,12 +13,15 @@ namespace Clustering
 	Cluster::Cluster()
 	{
 		// CONDITION: NEW EMPTY CLUSTER
+		__size = 0;
+
 	}
 
 // The big three: cpy ctor, overloaded operator=, dtor
 	Cluster::Cluster(const Cluster &arg_Cluster)
 	{
-
+		__size = arg_Cluster.getSize();
+		LNodePtr __points;
 	}
 
 	Cluster &Cluster::operator=(const Cluster &arg_Cluster) { }
@@ -26,11 +29,12 @@ namespace Clustering
 	Cluster::~Cluster() // dtor
 	{
 		// TAKEN FROM LECTURE
+		// THIS IS ARRAY
 		if (__points != NULL)
 		{
-			for (int i = 0; i < __size; i++)
-				delete &__points[i];
-			delete[] __points;
+			for (int index = 0; index < __size; index++)
+//				delete &__points[index];
+			delete __points;
 		}
 		__points = NULL;
 	}

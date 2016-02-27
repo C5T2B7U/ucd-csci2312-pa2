@@ -21,6 +21,11 @@ namespace Clustering {
 
 			__values = new double[__dim];
 
+			for (int index = 0; index < __dim; index++)
+			{
+				__values[index] = 0.0;
+			}
+
 		}
 
 //		Point::Point(int arg_int = 0, double *arg_ptr_double) {}
@@ -79,7 +84,7 @@ namespace Clustering {
 
 		void Point::setValue(int arg_int, double arg_double)
 		{
-
+			__values[arg_int] = arg_double;
 		}
 
 
