@@ -1,4 +1,8 @@
 #include <cassert> // FOR assert
+#include <cmath>
+using std::sqrt;
+using std::pow;
+
 
 #include "Point.h"
 using namespace Clustering;
@@ -97,11 +101,8 @@ namespace Clustering {
 			return __values[arg_int];
 		}
 
-		// Functions
-		double Point::distanceTo(const Point &arg_Point) const
-		{
-			return 0.0;
-		}
+
+
 
 		// Overloaded operators
 
@@ -260,3 +261,16 @@ namespace Clustering {
 //	);
 //}
 //
+double Point::distanceTo(const Point& arg_Point) const
+{
+	// FORMULA IS: sqrt( ((x2-x1)^2) + ... + ((z2-z1)^2) );
+	// NOTE:  EXPRESSION FOR SQUARE ROOT IS INHERENTLY >= 0
+
+	double sum = 0.0;
+
+	if (__dim == arg_Point.getDims())
+		for (int index = 0; index < __dim; ++index)
+			sum += pow(__values[index] - arg_Point.getValue(index), 2);
+
+	return sqrt(sum);
+}
