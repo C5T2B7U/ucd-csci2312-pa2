@@ -1,5 +1,10 @@
 #include <cassert> // FOR assert
 #include <cmath>
+#include <string>
+#include <sstream>
+using std::stringstream;
+using std::string;
+using std::stod;
 using std::sqrt;
 using std::pow;
 
@@ -232,11 +237,37 @@ namespace Clustering {
 
 		std::ostream &operator<<(std::ostream &os, const Point &arg_Point_right)
 		{
+			int index;
+
+			for (index = 0; index < arg_Point_right.getDims() - 1; ++index)
+				os << arg_Point_right.getValue(index) << ", ";
+
+			os << arg_Point_right.getValue(index);
+
 			return os;
 		}
 
 		std::istream &operator>>(std::istream &ins, Point &arg_Point_right)
 		{
+
+			// MOSLY TAKEN FROM LECTURE
+			string line;
+			string buffer;
+			double dvalue;
+			int index = -1;
+
+			while (getline(ins, line))
+			{
+				stringstream lineStream(line);
+
+				while (getline(lineStream, buffer, ','))
+				{
+					++index;
+					dvalue = stod(buffer);
+					arg_Point_right.setValue(index, dvalue);
+				}
+
+			}
 			return ins;
 		}
 
