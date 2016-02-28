@@ -136,7 +136,8 @@ namespace Clustering {
 
 		const Point Point::operator/(double arg_double) const // p3 = p2 / 2;
 		{
-			Point newPoint(0);
+			Point newPoint(*this);
+			newPoint /= arg_double;
 			return newPoint;
 		}
 
@@ -192,7 +193,7 @@ namespace Clustering {
 
 		bool operator!=(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			return true;
+			return (!(arg_Point_left == arg_Point_right));
 		}
 
 		bool operator<(const Point &arg_Point_left, const Point &arg_Point_right)
