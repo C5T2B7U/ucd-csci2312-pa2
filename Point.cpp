@@ -110,9 +110,6 @@ namespace Clustering {
 		Point &Point::operator*=(double arg_double) // p *= 6; p.operator*=(6);
 		{
 			// TAKEN FROM LECTURE
-			// Point &Point::operator/=(double d) { // TODO handle div-by-0 or let runtime handle it
-
-			assert(arg_double != 0);
 
 			for (int i = 0; i < __dim; i++)
 				__values[i] *= arg_double;
@@ -158,29 +155,38 @@ namespace Clustering {
 		// Friends
 		Point &operator+=(Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			// DO MEMBERWISE LOOP
+//			if (&arg_Point_left == &arg_Point_right)
+//				return arg_Point_left *= 2;
+			if (arg_Point_left.__dim == arg_Point_right.__dim)
+				for (int index = 0; index < arg_Point_left.__dim; ++index)
+					arg_Point_left.__values[index] += arg_Point_right.__values[index];
+
 			return arg_Point_left;
 		}
 
 
 	Point &operator-=(Point &arg_Point_left, const Point &arg_Point_right)
 	{
-		Point* newPoint;
-		newPoint = new Point(0);
-		return *newPoint;
+//		if (&arg_Point_left == &arg_Point_right)
+//			return arg_Point_left /= 2;
+		if (arg_Point_left.__dim == arg_Point_right.__dim)
+			for (int index = 0; index < arg_Point_left.__dim; ++index)
+				arg_Point_left.__values[index] -= arg_Point_right.__values[index];
+
+		return arg_Point_left;
 	}
 
 		const Point operator+(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			Point* newPoint;
-			newPoint = new Point(0);
-			return *newPoint;
+			Point newPoint(arg_Point_left);
+			return newPoint += arg_Point_right;
 		}
 
 		const Point operator-(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
 			// DO MEMBERWISE LOOP
-			return arg_Point_left;
+			Point newPoint(arg_Point_left);
+			return newPoint -= arg_Point_right;
 		}
 
 		bool operator==(const Point &arg_Point_left, const Point &arg_Point_right)

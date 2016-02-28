@@ -14,14 +14,24 @@ namespace Clustering
 	{
 		// CONDITION: NEW EMPTY CLUSTER
 		__size = 0;
+//		__points = new LNode;
 
 	}
 
 // The big three: cpy ctor, overloaded operator=, dtor
 	Cluster::Cluster(const Cluster &arg_Cluster)
 	{
-		__size = arg_Cluster.getSize();
-		LNodePtr __points;
+		if (&arg_Cluster == this)
+		{
+			// DO NOTHING
+		}
+		// ELSE DO CONSTRUCTOR
+		else
+		{
+			__size = arg_Cluster.getSize();
+//			LNodePtr __points;
+			__points = arg_Cluster.__points;
+		}
 	}
 
 	Cluster &Cluster::operator=(const Cluster &arg_Cluster) { }
@@ -33,11 +43,22 @@ namespace Clustering
 		if (__points != NULL)
 		{
 			for (int index = 0; index < __size; index++)
-//				delete &__points[index];
-			delete __points;
+				delete __points;
 		}
 		__points = NULL;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// Getters/setters
 	int Cluster::getSize() const // TODO add to the requirements
