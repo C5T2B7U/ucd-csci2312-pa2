@@ -106,11 +106,17 @@ namespace Clustering {
 		// Overloaded operators
 
 		// Members
-		Point &Point::operator*=(double) // p *= 6; p.operator*=(6);
+		Point &Point::operator*=(double arg_double) // p *= 6; p.operator*=(6);
 		{
-			Point* newPoint;
-			newPoint = new Point(0);
-			return *newPoint;
+			// TAKEN FROM LECTURE
+			// Point &Point::operator/=(double d) { // TODO handle div-by-0 or let runtime handle it
+
+			assert(arg_double != 0);
+
+			for (int i = 0; i < __dim; i++)
+				__values[i] *= arg_double;
+
+			return *this;
 		}
 
 	Point &Point::operator/=(double arg_double)
@@ -130,7 +136,8 @@ namespace Clustering {
 
 		const Point Point::operator*(double arg_double) const // prevent (p1 * 2) = p2;
 		{
-			Point newPoint(0);
+			Point newPoint(*this);
+			newPoint *= arg_double;
 			return newPoint;
 		}
 
