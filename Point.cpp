@@ -57,6 +57,10 @@ namespace Clustering {
 			}
 			else
 			{
+				for (int index = 0; index < __dim; ++index)
+				{
+					this->__values[index] = arg_Point.getValue(index);
+				}
 
 				return *this;
 			}
@@ -172,7 +176,18 @@ namespace Clustering {
 
 		bool operator==(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			return true;
+			bool result = false;
+
+			if (arg_Point_left.getId() == arg_Point_right.getId() &&
+				arg_Point_left.getDims() == arg_Point_right.getDims())
+			{
+				result = true;
+				for (int index = 0; result && index < arg_Point_left.getDims(); ++ index)
+					if (arg_Point_left.getValue(index) != arg_Point_right.getValue(index))
+						result = false;
+			}
+
+			return result;
 		}
 
 		bool operator!=(const Point &arg_Point_left, const Point &arg_Point_right)
