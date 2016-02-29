@@ -202,7 +202,7 @@ namespace Clustering {
 				arg_Point_left.getDims() == arg_Point_right.getDims())
 			{
 				result = true;
-				for (int index = 0; result && index < arg_Point_left.getDims(); ++ index)
+				for (int index = 0; result && index < arg_Point_left.getDims(); ++index)
 					if (arg_Point_left.getValue(index) != arg_Point_right.getValue(index))
 						result = false;
 			}
@@ -217,23 +217,103 @@ namespace Clustering {
 
 		bool operator<(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			return true;
+			// Note: One Point is smaller than another iff, for a given
+			// dimension position, the value of the first point is less than
+			// the value of the second point, and all the values on the left,
+			// if any, are all equal. The values on the right don't matter.
+			// For example, Point (5.0, 5.0, 4.5, 10.1, 13.4, 151.3) is
+			// smaller than (5.0, 5.0, 4.5, 10.1, 13.5, 15.9).
+			// Note: Implement operator<, then use it to implement operator>
+			// and operator>=. Finally, use operator> to implement operator<=.
+
+
+			// IF EXACT SAME OBJECTS CAN'T HAVE ONE LESS THAN OTHER
+			if (&arg_Point_left == &arg_Point_right)
+				return false;
+
+			bool result = false;
+			bool isEqual = false;
+
+			if (arg_Point_left.getDims() == arg_Point_right.getDims())
+			{
+
+///*DEBUG*/	std::cout << "\nDIM = " << arg_Point_left.getDims() << "\n";
+
+				isEqual = true;
+				for (int index = 0; isEqual && index < arg_Point_left.getDims(); ++index)
+				{
+///*DEBUG*/	std::cout << "arg_Point_left.getValue("<<index<<") = " << arg_Point_left.getValue(index) << "  <  arg_Point_right.getValue(index) = " << arg_Point_right.getValue(index) << "\n";
+					if (arg_Point_left.getValue(index) == arg_Point_right.getValue(index))
+					{
+						// CONTINUE LOOP
+						continue;
+					}
+					else if (arg_Point_left.getValue(index) < arg_Point_right.getValue(index))
+					{
+						isEqual = false;
+						result = true;
+					}
+					// RESULT IS ALREADY FALSE; RETURN
+					else isEqual = false;
+				}
+			}
+
+			return result;
 		}
+
+
 
 		bool operator>(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			return true;
+			return (arg_Point_right < arg_Point_left);
 		}
+
 
 		bool operator<=(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			return true;
+			// CANNOT USE EXISTING == OPERATOR FOR REASON DON'T CARE ABOUT __ID
+			// EXACT SAME OBJECTS ARE INHERENTLY EQUAL
+			if (&arg_Point_left == &arg_Point_right)
+				return true;
+
+			bool result = false;
+			bool isEqual = false;
+
+			if (arg_Point_left.getDims() == arg_Point_right.getDims())
+			{
+
+///*DEBUG*/	std::cout << "\nDIM = " << arg_Point_left.getDims() << "\n";
+
+				isEqual = true;
+				for (int index = 0; isEqual && index < arg_Point_left.getDims(); ++index)
+				{
+///*DEBUG*/	std::cout << "arg_Point_left.getValue("<<index<<") = " << arg_Point_left.getValue(index) << "  <  arg_Point_right.getValue(index) = " << arg_Point_right.getValue(index) << "\n";
+					if (arg_Point_left.getValue(index) == arg_Point_right.getValue(index))
+					{
+						// CONTINUE LOOP
+						continue;
+					}
+					else if (arg_Point_left.getValue(index) < arg_Point_right.getValue(index))
+					{
+						isEqual = false;
+						result = true;
+					}
+					// RESULT IS ALREADY FALSE; RETURN
+					else isEqual = false;
+				}
+			}
+
+			return (result || isEqual);
 		}
+
+
+
 
 		bool operator>=(const Point &arg_Point_left, const Point &arg_Point_right)
 		{
-			return true;
+			return (arg_Point_right <= arg_Point_left);
 		}
+
 
 		std::ostream &operator<<(std::ostream &os, const Point &arg_Point_right)
 		{
@@ -262,9 +342,8 @@ namespace Clustering {
 
 				while (getline(lineStream, buffer, ','))
 				{
-					++index;
 					dvalue = stod(buffer);
-					arg_Point_right.setValue(index, dvalue);
+					arg_Point_right.setValue(++index, dvalue);
 				}
 
 			}
