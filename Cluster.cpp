@@ -45,19 +45,18 @@ namespace Clustering
 			__size = 0;
 
 			// DO MEMBERWISE ASSIGNMENT
-	//		LNodePtr prev_oldCluster = arg_Cluster.__points;
 			LNodePtr cursor_oldCluster = arg_Cluster.__points;
 
 			PointPtr newPoint;
 			newPoint = new Point(arg_Cluster.__points->point);
-//			cursor_newCluster = new LNode(/*POINT, NEXT*/ arg_Cluster.__points->point, NULL);
 			__points = new LNode(/*POINT, NEXT*/ *newPoint, NULL);
 			++__size;
 
 			LNodePtr cursor_newCluster = __points;
 			LNodePtr prev_newCluster = cursor_newCluster;
+			cursor_oldCluster = cursor_oldCluster->next;
 
-			for (int index = 0; cursor_oldCluster != NULL; cursor_oldCluster = cursor_oldCluster->next)
+			for ( ; cursor_oldCluster != NULL; cursor_oldCluster = cursor_oldCluster->next)
 			{
 
 				newPoint = new Point(cursor_oldCluster->point);
@@ -127,6 +126,7 @@ namespace Clustering
 
 				LNodePtr cursor_newCluster = __points;
 				LNodePtr prev_newCluster = cursor_newCluster;
+				cursor_oldCluster = cursor_oldCluster->next;
 
 				for (int index = 0; cursor_oldCluster != NULL; cursor_oldCluster = cursor_oldCluster->next)
 				{
@@ -543,6 +543,9 @@ namespace Clustering
 // Friends: Comparison
 	bool operator==(const Cluster &arg_Cluster_left, const Cluster &arg_Cluster_right)
 	{
+
+///*DEBUG*/   std::cout << "\nLEFT = \n" << arg_Cluster_left << "\n\n" << "RIGHT = \n" << arg_Cluster_right << "\n\n";
+
 		bool isEqual = true;
 
 		LNodePtr cursor_left = arg_Cluster_left.__points;

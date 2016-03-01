@@ -810,7 +810,11 @@ void test_cluster_smoketest(ErrorContext &ec) {
         Cluster c1, c2(c1);
 
         pass = (c1 == c2);
-        if (!pass) break;
+        if (!pass)
+        {
+///*DEBUG*/   std::cout << "\nNOT PASS!";
+            break;
+        }
     }
     ec.result(pass);
 }
@@ -962,11 +966,19 @@ void test_cluster_copying(ErrorContext &ec, unsigned int numRuns) {
             Point   p1(10),
                     p2(10),
                     p3(10);
+
+            p1[1] = 1.0;
+            p2[2] = 2.0;
+            p3[3] = 3.0;
+
+
             Cluster c1;
             c1.add(p1); c1.add(p2); c1.add(p3);
             Cluster c2(c1);
 
-            pass = (c1 == c2);
+///*DEBUG*/   std::cout << "\nC1 = \n" << c1 << "\n\n" << "C2 = \n" << c2 << "\n\n";
+
+                    pass = (c1 == c2);
 
             ec.result(pass);
         }
