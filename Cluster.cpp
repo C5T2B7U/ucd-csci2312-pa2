@@ -420,8 +420,8 @@ namespace Clustering
 		// Point cannot be modified. Note: Don't overuse this operator,
 		// because it is very inefficient for a singly-linked list.
 
-		if (__points != NULL && index < __size && index >= 0)
-		{
+//		if (__points != NULL && index < __size && index >= 0)
+//		{
 			LNodePtr cursor = __points;
 
 			for (int position = 0; position < index; ++position)
@@ -431,8 +431,8 @@ namespace Clustering
 			}
 
 			return cursor->point;
-		}
-		else return NULL;
+//		}
+//		else return NULL;
 	}
 
 
