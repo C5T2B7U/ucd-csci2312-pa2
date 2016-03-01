@@ -94,8 +94,6 @@ namespace Clustering
 
 	Cluster::~Cluster() // dtor
 	{
-		// TAKEN FROM LECTURE
-		// THIS IS ARRAY
 		if (__points != NULL)
 		{
 			int trueSize, index;
@@ -146,24 +144,80 @@ namespace Clustering
 // Set functions: They allow calling c1.add(c2.remove(p));
 	void Cluster::add(const Point &arg_Point) // TODO add asc order to the requirements
 	{
+
+		PointPtr newPoint;
+		newPoint = new Point(arg_Point);
+
+
 		if (__points == NULL)
 		{
-
-			PointPtr newPoint;
-			newPoint = new Point(arg_Point);
-
-
 			LNodePtr newNode;
-			newNode = new LNode(*newPoint, __points);
+			newNode = new LNode(*newPoint, NULL);
 
 			__points  = newNode;
 
 			__size = 1;
-		}
 
+			// END FUNCTION
+		}
 		else
 		{
 			// MUST BUILD
+			// INSERT IN LEXICOGRAPHIC ORDER
+			LNodePtr prev;
+			LNodePtr cursor;
+			prev = __points;
+			cursor = prev->next;
+
+			LNodePtr insertBefore = NULL;
+
+
+			if (cursor == NULL)
+			{
+				if (arg_Point < prev->point)
+					insertBefore = prev;
+				else insertBefore = cursor;
+			}
+			else
+			{
+				if (arg_Point < prev->point)
+					insertBefore = prev;
+
+				for (; insertBefore == NULL && cursor != NULL; cursor = cursor->next)
+				{
+					if (arg_Point < cursor->point)
+						insertBefore = cursor;
+					else
+						prev = cursor;
+				}
+
+				// IF INSERTBEFORE STILL NULL THEN ADD TO END
+				// NOTE: END IS NULL
+			}
+
+
+
+			if (insertBefore == __points)
+			{
+				// REPLACE HEAD NODE
+				LNodePtr newNode;
+				newNode = new LNode(*newPoint, __points);
+
+				__points  = newNode;
+
+				++__size;
+			}
+			else
+			{
+				LNodePtr newNode;
+				newNode = new LNode(*newPoint, insertBefore);
+
+				prev->next = newNode;
+
+				++__size;
+
+			}
+
 		}
 
 
