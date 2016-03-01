@@ -98,10 +98,28 @@ namespace Clustering
 		// THIS IS ARRAY
 		if (__points != NULL)
 		{
-			for (int index = 0; index < __size; index++)
-				delete __points;
+			int trueSize, index;
+			LNodePtr cursor = __points;
+
+			for (trueSize = 0; cursor != NULL; cursor = cursor->next)
+				++trueSize;
+
+			LNodePtr addressArray[trueSize];
+
+			cursor = __points;
+
+			for (index = 0; index < trueSize; ++index)
+			{
+				addressArray[index] = cursor;
+				cursor = cursor->next;
+			}
+
+			while (trueSize > 0)
+				delete addressArray[--trueSize];
+
 		}
 		__points = NULL;
+		__size = 0;
 	}
 
 
