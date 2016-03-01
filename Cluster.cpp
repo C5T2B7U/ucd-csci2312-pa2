@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <string>
+#include <sstream>
 
 #include "Cluster.h"
 using namespace Clustering;
@@ -142,7 +143,7 @@ namespace Clustering
 				}
 
 			}
-			
+
 		}
 	}
 
@@ -279,8 +280,12 @@ namespace Clustering
 
 		}
 
-
 	}
+
+
+
+
+
 	
 	const Point &Cluster::remove(const Point &arg_Point)
 	{
@@ -397,6 +402,11 @@ namespace Clustering
 
 
 
+
+
+
+
+
 // Overloaded operators
 
 
@@ -425,69 +435,169 @@ namespace Clustering
 		else return NULL;
 	}
 
+
+
+
+
 // Members: Compound assignment (Point argument)
 	Cluster &Cluster::operator+=(const Point &arg_Point)
 	{
-//		Cluster newCluster;
-//		return newCluster;
+		add(arg_Point);
+
 		return *this;
 	}
 
 	Cluster &Cluster::operator-=(const Point &arg_Point)
 	{
-//		Cluster newCluster;
-//		return newCluster;
+		remove(arg_Point);
+
 		return *this;
 	}
+
+
+
 
 // Members: Compound assignment (Cluster argument)
 	Cluster &Cluster::operator+=(const Cluster &arg_Cluster) // union
 	{
-//		Cluster newCluster;
-//		return newCluster;
+
 		return *this;
 	}
 
 	Cluster &Cluster::operator-=(const Cluster &arg_Cluster) // (asymmetric) difference
 	{
-//		Cluster newCluster;
-//		return newCluster;
+
+
 		return *this;
 	}
+
+
+
+
+
+
+
+
 
 // Friends: IO
 	std::ostream &operator<<(std::ostream &os, const Cluster &arg_Cluster)
 	{
+		LNodePtr cursor = arg_Cluster.__points;
+
+		if (&cursor != NULL)
+		{
+			for ( ; &cursor->point != NULL; cursor = cursor->next)
+			{
+///*DEBUG*/	std::cout << cursor->point << "\n";
+
+				os << cursor->point;
+				if (&cursor->next != NULL)
+					os << "\n";
+			}
+		}
+
+///*DEBUG*/	std::cout << os << "\n";
+
 		return os;
 	}
 
+
+
+
 	std::istream &operator>>(std::istream &ins, Cluster &arg_Cluster)
 	{
+		std::string line, buffer;
+		PointPtr newPoint = NULL;
+
+
+		while (getline(ins, line))
+		{
+
+///*DEBUG*/	std::cout << "\nGOT LINE = " << line;
+
+			int pointSize = 0;
+
+			std::stringstream lineStream_count(line);
+			std::stringstream lineStream_do(line);
+
+			while (getline(lineStream_count, buffer, ','))
+				++pointSize;
+
+			newPoint = new Point(pointSize);
+
+			lineStream_do >> *newPoint;
+
+			arg_Cluster.add(*newPoint);
+
+		}
+
 		return ins;
 	}
+
+
+
+
+
+
 
 // Friends: Comparison
 	bool operator==(const Cluster &arg_Cluster_left, const Cluster &arg_Cluster_right)
 	{
-		return true;
+		bool isEqual = true;
+
+		LNodePtr cursor_left = arg_Cluster_left.__points;
+		LNodePtr cursor_right = arg_Cluster_right.__points;
+
+		while (isEqual && cursor_left != NULL && cursor_right != NULL)
+		{
+			if (cursor_left->point != cursor_right->point)
+			{
+				isEqual = false;
+				continue;
+			}
+			else
+			{
+				cursor_left = cursor_left->next;
+				cursor_right = cursor_right->next;
+			}
+		}
+
+		// DOUBLECHECK FOR CLUSTER1 == (CLUSTER2 + EXTRA)
+		if (isEqual)
+		{
+			// BOTH CURSORS WILL EQUAL NULL IF CLUSTERS ARE EQUAL
+			if (cursor_left != NULL || cursor_right != NULL)
+				isEqual = false;
+		}
+
+		return isEqual;
 	}
+
+
+
+
 
 	bool operator!=(const Cluster &arg_Cluster_left, const Cluster &arg_Cluster_right)
 	{
-		return true;
+		return (!(arg_Cluster_left == arg_Cluster_right));
 	}
+
+
+
 
 // Friends: Arithmetic (Cluster and Point)
 	const Cluster operator+(const Cluster &arg_Cluster, const Point &arg_Point)
 	{
-		Cluster newCluster;
-		return newCluster;
+		Cluster newCluster(arg_Cluster);
+
+		return newCluster += arg_Point;
 	}
 
 	const Cluster operator-(const Cluster &arg_Cluster, const Point &arg_Point)
 	{
-		Cluster newCluster;
-		return newCluster;
+		Cluster newCluster(arg_Cluster);
+
+		return newCluster -= arg_Point;
 	}
 
 // Friends: Arithmetic (two Clusters)
