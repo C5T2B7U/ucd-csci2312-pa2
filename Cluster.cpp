@@ -173,6 +173,7 @@ namespace Clustering
 
 			if (cursor == NULL)
 			{
+				// EXISTING LIST IS SIZE 1
 				if (arg_Point < prev->point)
 					insertBefore = prev;
 				else insertBefore = cursor;
@@ -195,7 +196,7 @@ namespace Clustering
 			}
 
 
-
+			// THIS RUNS IF LIST NOT EMPTY
 			if (insertBefore == __points)
 			{
 				// REPLACE HEAD NODE
@@ -228,6 +229,89 @@ namespace Clustering
 		// JUST REMOVE IT FROM CLUSTER LIST
 		// AND RETURN ITS ADDRESS
 
+		// THIS MEANS IF CURSOR->POINT == ARG_POINT THEN LINK PREV->NEXT TO CURSOR->NEXT
+
+		LNodePtr prev = __points;
+
+		if (prev == NULL)
+		{
+			// EMPTY LIST
+			// DO NOTHING
+			// RETURN ARG_POINT
+		}
+		else if (prev->next == NULL)
+		{
+			// LIST SIZE == 1
+			if (prev->point == arg_Point)
+			{
+				// ARG_POINT IS ONLY POINT
+				// SET HEAD = NULL
+				// DECREMENT SIZE
+				// DELETE NODE HOLDING ONLY POINT
+				__points = NULL;
+				__size = 0;
+				delete prev;
+
+				// RETURN ARG_POINT
+			}
+			else
+			{
+				// ARG_POINT IS NOT IN LIST
+				// DO NOTHING
+				// RETURN ARG_POINT
+			}
+		}
+		else
+		{
+			// THIS RUNS IF LIST SIZE > 1
+			// SEARCH LIST; DELETE NODE IF ARG_POINT FOUND
+			bool found = false;
+
+			// PREV IS STILL HEAD
+			prev = __points;
+			LNodePtr cursor = __points->next;
+
+			if (__points->point == arg_Point)
+			{
+				// HEAD OF LIST SIZE > 1 IS ARG_POINT
+				// SET FOUND
+				// SET HEAD = CURSOR
+				// DECREMENT SIZE
+				// DELETE NODE HOLDING ARG_POINT
+				found = true;
+				__points = cursor;
+				--__size;
+				delete prev;
+
+				// RETURN ARG_POINT
+			}
+
+
+			for (; !found && cursor != NULL; cursor = cursor->next)
+			{
+				if (cursor->point == arg_Point)
+				{
+					// DO FOUND ACTION
+					// SET PREV->NEXT = CURSOR->NEXT
+					// DECREMENT SIZE
+					// DELETE NODE HOLDING ARG_POINT
+					found = true;
+					prev->next = cursor->next;
+					--__size;
+					delete cursor;
+
+					// RETURN ARG_POINT
+				}
+				else
+				{
+					// PREP NEXT ITERATION
+					prev = cursor;
+				}
+			}
+
+			// IF NOT FOUND THEN DO NOTHING
+			//RETURN ARG_POINT
+		}
 
 		return arg_Point;
 	}
@@ -236,18 +320,18 @@ namespace Clustering
 
 	bool Cluster::contains(const Point &arg_Point)
 	{
-		bool result = false;
+		bool found = false;
 
 		LNodePtr cursor = __points;
 
-		for ( ; !result && cursor != NULL; cursor = cursor->next)
+		for ( ; !found && cursor != NULL; cursor = cursor->next)
 			if (cursor->point == arg_Point)
 			{
 ///*DEBUG*/	std::cout << "\nCONTAINS: \n" << cursor->point << "\n = " << arg_Point << "\n";
-				result = true;
+				found = true;
 			}
 
-		return result;
+		return found;
 	}
 
 
