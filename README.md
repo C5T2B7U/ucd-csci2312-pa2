@@ -1,3 +1,18 @@
+# BRIAN SUMNER
+#### SID: *****6936
+#### UCD CSCI 2312-002
+#### SPRING 2016
+#### https://github.com/C5T2B7U/ucd-csci2312-pa2
+
+
+.
+
+.
+
+.
+
+
+
 ## CSCI 2312: Programming Assignment 2
 
 _operator overloading and linked data structures_
