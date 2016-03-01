@@ -8,6 +8,13 @@ namespace Clustering
 {
 
 	typedef Point * PointPtr;
+//
+//	LNode::point = NULL;
+//	LNode::next = NULL;
+
+	
+	LNode::LNode(const Point &p, LNodePtr n) : point(p), next(n) {}
+
 
 
 	Cluster::Cluster()
@@ -15,6 +22,7 @@ namespace Clustering
 		// CONDITION: NEW EMPTY CLUSTER
 		__size = 0;
 //		__points = new LNode;
+		__points = NULL;
 
 	}
 
@@ -69,7 +77,29 @@ namespace Clustering
 // Set functions: They allow calling c1.add(c2.remove(p));
 	void Cluster::add(const Point &arg_Point) // TODO add asc order to the requirements
 	{
-		
+		if (__points == NULL)
+		{
+
+//			__points->point = arg_Point;
+
+			PointPtr newPoint;
+			newPoint = new Point(arg_Point);
+
+
+			LNodePtr newNode;
+			newNode = new LNode(*newPoint, __points);
+//			newNode = new LNode;
+			__points  = newNode;
+
+			++__size;
+		}
+
+		else
+		{
+
+		}
+
+
 	}
 	
 	const Point &Cluster::remove(const Point &arg_Point)
@@ -89,8 +119,23 @@ namespace Clustering
 // Members: Subscript
 	const Point &Cluster::operator[](unsigned int index) const // notice: const
 	{
-//		Cluster newCluster;
-//		return newCluster;
+		// Implement the const member subscript operator[] to return a const
+		// reference to a particular Point in the ordered linked-list. The
+		// Point cannot be modified. Note: Don't overuse this operator,
+		// because it is very inefficient for a singly-linked list.
+
+		if (__points != NULL && index <= __size && index >= 0)
+		{
+			LNodePtr cursor = __points;
+
+			for (int position = 0; position <= index; ++index)
+			{
+				cursor = cursor->next;
+			}
+
+			return cursor->point;
+		}
+		else return NULL;
 	}
 
 // Members: Compound assignment (Point argument)
