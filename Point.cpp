@@ -47,8 +47,10 @@ namespace Clustering {
 				// DO NOTHING
 			}
 			// ELSE DO CONSTRUCTOR
-			else
+			else if (&arg_Point != NULL)
 			{
+///*DEBUG*/	std::cout << "ID = " << arg_Point.__id << "    DIM = " << arg_Point.__dim << "\n";
+				// SEGFAULT HERE
 				__id = arg_Point.__id;
 				__dim = arg_Point.__dim;
 				__values = new double[arg_Point.getDims()];
@@ -57,6 +59,9 @@ namespace Clustering {
 					setValue(index, arg_Point.getValue(index));
 			}
 		}
+
+
+
 
 		Point &Point::operator=(const Point &arg_Point)
 		{

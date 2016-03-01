@@ -12,7 +12,7 @@ namespace Clustering
 //	LNode::point = NULL;
 //	LNode::next = NULL;
 
-	
+
 	LNode::LNode(const Point &p, LNodePtr n) : point(p), next(n) {}
 
 
@@ -33,16 +33,64 @@ namespace Clustering
 		{
 			// DO NOTHING
 		}
+		else if (arg_Cluster.__points == NULL)
+		{
+			// INSTANTIATE EMPTY CLUSTER
+			__size = 0;
+			__points = NULL;
+		}
 		// ELSE DO CONSTRUCTOR
 		else
 		{
-			__size = arg_Cluster.getSize();
-//			LNodePtr __points;
-			__points = arg_Cluster.__points;
+			__size = 0;
+
+			// DO MEMBERWISE ASSIGNMENT
+	//		LNodePtr prev_oldCluster = arg_Cluster.__points;
+			LNodePtr cursor_oldCluster = arg_Cluster.__points;
+
+			PointPtr newPoint;
+			newPoint = new Point(arg_Cluster.__points->point);
+//			cursor_newCluster = new LNode(/*POINT, NEXT*/ arg_Cluster.__points->point, NULL);
+			__points = new LNode(/*POINT, NEXT*/ *newPoint, NULL);
+			++__size;
+
+			LNodePtr cursor_newCluster = __points;
+			LNodePtr prev_newCluster = cursor_newCluster;
+
+			for (int index = 0; cursor_oldCluster != NULL; cursor_oldCluster = cursor_oldCluster->next)
+			{
+
+				newPoint = new Point(cursor_oldCluster->point);
+				cursor_newCluster = new LNode(/*POINT, NEXT*/ *newPoint, NULL);
+
+				prev_newCluster->next = cursor_newCluster;
+
+				++__size;
+
+				prev_newCluster = cursor_newCluster;
+//				__points = arg_Cluster.__points;
+			}
 		}
 	}
 
-	Cluster &Cluster::operator=(const Cluster &arg_Cluster) { }
+
+
+
+	Cluster &Cluster::operator=(const Cluster &arg_Cluster)
+	{
+		if (&arg_Cluster == this)
+		{
+			// DO NOTHING
+		}
+		else
+		{
+			// DO MEMBERWISE ASSIGNMENT
+		}
+	}
+
+
+
+
 
 	Cluster::~Cluster() // dtor
 	{
@@ -74,13 +122,14 @@ namespace Clustering
 		return __size;
 	}
 
+
+
+
 // Set functions: They allow calling c1.add(c2.remove(p));
 	void Cluster::add(const Point &arg_Point) // TODO add asc order to the requirements
 	{
 		if (__points == NULL)
 		{
-
-//			__points->point = arg_Point;
 
 			PointPtr newPoint;
 			newPoint = new Point(arg_Point);
@@ -88,15 +137,15 @@ namespace Clustering
 
 			LNodePtr newNode;
 			newNode = new LNode(*newPoint, __points);
-//			newNode = new LNode;
+
 			__points  = newNode;
 
-			++__size;
+			__size = 1;
 		}
 
 		else
 		{
-
+			// MUST BUILD
 		}
 
 
@@ -104,17 +153,28 @@ namespace Clustering
 	
 	const Point &Cluster::remove(const Point &arg_Point)
 	{
-	//	Point newPoint(0);
-	//	return newPoint;
+		// DON'T ACTUALLY DELETE POINT
+		// JUST REMOVE IT FROM CLUSTER LIST
+		// AND RETURN ITS ADDRESS
+
+
 		return arg_Point;
 	}
+
+
 
 	bool Cluster::contains(const Point &arg_Point)
 	{
 		return true;
 	}
 
+
+
+
 // Overloaded operators
+
+
+
 
 // Members: Subscript
 	const Point &Cluster::operator[](unsigned int index) const // notice: const
@@ -124,12 +184,13 @@ namespace Clustering
 		// Point cannot be modified. Note: Don't overuse this operator,
 		// because it is very inefficient for a singly-linked list.
 
-		if (__points != NULL && index <= __size && index >= 0)
+		if (__points != NULL && index < __size && index >= 0)
 		{
 			LNodePtr cursor = __points;
 
-			for (int position = 0; position <= index; ++index)
+			for (int position = 0; position < index; ++position)
 			{
+				// SEGFAULT HERE!
 				cursor = cursor->next;
 			}
 
