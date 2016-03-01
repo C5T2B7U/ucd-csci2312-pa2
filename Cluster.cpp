@@ -21,7 +21,6 @@ namespace Clustering
 	{
 		// CONDITION: NEW EMPTY CLUSTER
 		__size = 0;
-//		__points = new LNode;
 		__points = NULL;
 
 	}
@@ -237,7 +236,18 @@ namespace Clustering
 
 	bool Cluster::contains(const Point &arg_Point)
 	{
-		return true;
+		bool result = false;
+
+		LNodePtr cursor = __points;
+
+		for ( ; !result && cursor != NULL; cursor = cursor->next)
+			if (cursor->point == arg_Point)
+			{
+///*DEBUG*/	std::cout << "\nCONTAINS: \n" << cursor->point << "\n = " << arg_Point << "\n";
+				result = true;
+			}
+
+		return result;
 	}
 
 
