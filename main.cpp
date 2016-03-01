@@ -6,7 +6,7 @@
 
 #include "ErrorContext.h"
 #include "ClusteringTests.h"
-#include "Cluster.h"
+
 using std::cout;
 using std::endl;
 
@@ -41,7 +41,6 @@ int main() {
     test_point_SAO(ec, NumIters);
     test_point_distance(ec, NumIters);
     test_point_IO(ec, NumIters);
-
 
     // cluster tests
     test_cluster_smoketest(ec);
