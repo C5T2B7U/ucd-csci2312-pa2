@@ -83,7 +83,66 @@ namespace Clustering
 		}
 		else
 		{
+			// DELETE THIS CLUSTER'S NODES
+			{
+				if (__points != NULL)
+				{
+					int trueSize, index;
+					LNodePtr cursor = __points;
+
+					for (trueSize = 0; cursor != NULL; cursor = cursor->next)
+						++trueSize;
+
+					LNodePtr addressArray[trueSize];
+
+					cursor = __points;
+
+					for (index = 0; index < trueSize; ++index)
+					{
+						addressArray[index] = cursor;
+						cursor = cursor->next;
+					}
+
+					while (trueSize > 0)
+						delete addressArray[--trueSize];
+				}
+			}
+
+			// SET __SIZE = 0
+			__points = NULL;
+			__size = 0;
+
 			// DO MEMBERWISE ASSIGNMENT
+			{
+				// DO MEMBERWISE ASSIGNMENT
+				//		LNodePtr prev_oldCluster = arg_Cluster.__points;
+				LNodePtr cursor_oldCluster = arg_Cluster.__points;
+
+				PointPtr newPoint;
+				newPoint = new Point(arg_Cluster.__points->point);
+//			cursor_newCluster = new LNode(/*POINT, NEXT*/ arg_Cluster.__points->point, NULL);
+				__points = new LNode(/*POINT, NEXT*/ *newPoint, NULL);
+				++__size;
+
+				LNodePtr cursor_newCluster = __points;
+				LNodePtr prev_newCluster = cursor_newCluster;
+
+				for (int index = 0; cursor_oldCluster != NULL; cursor_oldCluster = cursor_oldCluster->next)
+				{
+
+					newPoint = new Point(cursor_oldCluster->point);
+					cursor_newCluster = new LNode(/*POINT, NEXT*/ *newPoint, NULL);
+
+					prev_newCluster->next = cursor_newCluster;
+
+					++__size;
+
+					prev_newCluster = cursor_newCluster;
+//				__points = arg_Cluster.__points;
+				}
+
+			}
+			
 		}
 	}
 
@@ -315,6 +374,7 @@ namespace Clustering
 
 		return arg_Point;
 	}
+
 
 
 
