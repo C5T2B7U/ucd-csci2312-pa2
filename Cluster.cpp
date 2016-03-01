@@ -631,14 +631,16 @@ namespace Clustering
 // Friends: Arithmetic (two Clusters)
 	const Cluster operator+(const Cluster &arg_Cluster_left, const Cluster &arg_Cluster_right) // union
 	{
-		Cluster newCluster;
-		return newCluster;
+		Cluster newCluster(arg_Cluster_left);
+
+		return newCluster += arg_Cluster_right;
 	}
 
 	const Cluster operator-(const Cluster &arg_Cluster_left, const Cluster &arg_Cluster_right) // (asymmetric) difference
 	{
-		Cluster newCluster;
-		return newCluster;
+		Cluster newCluster(arg_Cluster_left);
+
+		return newCluster -= arg_Cluster_right;
 	}
 
 
