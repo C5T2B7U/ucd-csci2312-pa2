@@ -457,15 +457,38 @@ namespace Clustering
 
 
 
+
 // Members: Compound assignment (Cluster argument)
 	Cluster &Cluster::operator+=(const Cluster &arg_Cluster) // union
 	{
+		// GONNA DO THIS THE LAZY INEFFICIENT WAY
+
+		LNodePtr cursor_right = arg_Cluster.__points;
+
+		for ( ; cursor_right != NULL; cursor_right = cursor_right->next)
+		{
+			if (!(this->contains(cursor_right->point)))
+				add(cursor_right->point);
+		}
 
 		return *this;
 	}
 
+
+
+
+
 	Cluster &Cluster::operator-=(const Cluster &arg_Cluster) // (asymmetric) difference
 	{
+		// GONNA DO THIS THE LAZY INEFFICIENT WAY
+
+		LNodePtr cursor_right = arg_Cluster.__points;
+
+		for ( ; cursor_right != NULL; cursor_right = cursor_right->next)
+		{
+			if ((this->contains(cursor_right->point)))
+				remove(cursor_right->point);
+		}
 
 
 		return *this;
@@ -500,6 +523,8 @@ namespace Clustering
 
 		return os;
 	}
+
+
 
 
 
